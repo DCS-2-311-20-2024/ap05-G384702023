@@ -1,11 +1,11 @@
 //
 // 応用プログラミング 第5回 課題1 (ap0501)
-// G384002023 拓殖太郎
+// G384702023 西原樹
 //
 "use strict"; // 厳格モード
 
 import * as THREE from 'three';
-// import { OrbitControls } from 'three/addons';
+import { OrbitControls } from 'three/addons';
 import GUI from 'ili-gui';
 
 // ３Ｄページ作成関数の定義
@@ -35,21 +35,24 @@ function init() {
     .appendChild(renderer.domElement);
 
   // カメラコントロール
-  // const orbitControls = new OrbitControls(camera, renderer.domElement);
+  const orbitControls = new OrbitControls(camera, renderer.domElement);
 
   // 座標軸の設定
   const axes = new THREE.AxesHelper(18);
   scene.add(axes);
 
   // テクスチャの読み込み
+  const textureLoader = new THREE.TextureLoader();
+  const texture1 = textureLoader.load("logo.png");
+  // const texture2 = textureLoader.load("mypict.png");
 
   // 立方体の作成
   const cubeGeometry = new THREE.BoxGeometry(2, 2, 2);
-  const cubeMaterial = new THREE.MeshNormalMaterial();
+  const cubeMaterial = new THREE.MeshLambertMaterial();
   const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
 
   // 立方体にテクスチャを登録
-  // cubeMaterial.map = texture1;
+  cubeMaterial.map = texture1;
 
   // 立方体の位置
   cube.position.y = 2;
@@ -60,14 +63,19 @@ function init() {
   scene.add(cube);
 
   // 球の作成
+  const sphereGeometry = new THREE.SphereGeometry(1, 24, 24);
+  const sphereMaterial = new THREE.MeshPhongMarerial();
+  const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
 
   // 球にテクスチャを登録
 
   // 球の位置
+  sphere.position.set(2.5,  2, -1);
  
   // 球は影を作る
   
   // シーンに球を加える
+  scene.add(sphere);
 
   // 平面の作成
   const circle = new THREE.Mesh(
@@ -126,7 +134,7 @@ function init() {
 
   function render() {
     // カメラ制御の更新
-    // orbitControls.update();
+    orbitControls.update();
     // 座標軸のON/OFF
     axes.visible = controls.axes;
     // 物体の回転
